@@ -3,6 +3,7 @@ name = "zquery"
 version = "0.1.0"
 edition = "2024"
 description = "CLI tool for browsing a Zotero library, designed for coding agent integration"
+license = "MIT"
 
 [dependencies]
 clap = { version = "4", features = ["derive", "env"] }
