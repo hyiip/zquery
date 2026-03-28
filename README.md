@@ -6,25 +6,39 @@ Reads the local Zotero SQLite database directly, works while Zotero is running.
 
 ## Install
 
-```bash
-cargo install --path .
-```
-
-### Claude Code skill
-
-zquery ships with a [Claude Code skill](skill/SKILL.md) so coding agents know how to use it. To install:
+### Quick install (downloads binary + Claude Code skill)
 
 ```bash
 # Linux/macOS
-mkdir -p ~/.claude/skills/zquery
-cp skill/SKILL.md ~/.claude/skills/zquery/
+curl -sSL https://raw.githubusercontent.com/hyiip/zquery/main/install.sh | bash
 
 # Windows (PowerShell)
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\zquery"
-Copy-Item skill\SKILL.md "$env:USERPROFILE\.claude\skills\zquery\"
+irm https://raw.githubusercontent.com/hyiip/zquery/main/install.ps1 | iex
 ```
 
-Then any Claude Code session can use `/zquery` to learn how to browse your library.
+### From source
+
+```bash
+cargo install --path .
+
+# Install the Claude Code skill manually
+mkdir -p ~/.claude/skills/zquery            # Linux/macOS
+cp skill/SKILL.md ~/.claude/skills/zquery/
+```
+
+The install scripts download the release binary to `~/.local/bin` and copy the [Claude Code skill](skill/SKILL.md) to `~/.claude/skills/zquery/`.
+
+If `~/.local/bin` is not on your PATH, add it:
+
+```bash
+# Linux/macOS (add to ~/.bashrc or ~/.zshrc)
+export PATH="$HOME/.local/bin:$PATH"
+
+# Windows (PowerShell, run once)
+[Environment]::SetEnvironmentVariable('PATH', "$env:USERPROFILE\.local\bin;" + [Environment]::GetEnvironmentVariable('PATH', 'User'), 'User')
+```
+
+Any Claude Code session can then use `/zquery` to browse your library.
 
 ## Usage
 
