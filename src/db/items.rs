@@ -59,7 +59,10 @@ impl ZoteroDB {
             });
 
             let find = |name: &str| -> Option<String> {
-                fields.iter().find(|(k, _)| k == name).map(|(_, v)| v.clone())
+                fields
+                    .iter()
+                    .find(|(k, _)| k == name)
+                    .map(|(_, v)| v.clone())
             };
 
             items.push(Item {
@@ -124,10 +127,7 @@ impl ZoteroDB {
         }
     }
 
-    fn batch_get_fields(
-        &self,
-        item_ids: &[i64],
-    ) -> Result<HashMap<i64, Vec<(String, String)>>> {
+    fn batch_get_fields(&self, item_ids: &[i64]) -> Result<HashMap<i64, Vec<(String, String)>>> {
         let placeholders = item_ids.iter().map(|_| "?").collect::<Vec<_>>().join(",");
         let sql = format!(
             "SELECT id.itemID, f.fieldName, idv.value
@@ -138,10 +138,16 @@ impl ZoteroDB {
             placeholders
         );
         let mut stmt = self.conn.prepare(&sql)?;
-        let params: Vec<&dyn rusqlite::types::ToSql> =
-            item_ids.iter().map(|id| id as &dyn rusqlite::types::ToSql).collect();
+        let params: Vec<&dyn rusqlite::types::ToSql> = item_ids
+            .iter()
+            .map(|id| id as &dyn rusqlite::types::ToSql)
+            .collect();
         let rows = stmt.query_map(params.as_slice(), |row| {
-            Ok((row.get::<_, i64>(0)?, row.get::<_, String>(1)?, row.get::<_, String>(2)?))
+            Ok((
+                row.get::<_, i64>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+            ))
         })?;
 
         let mut map: HashMap<i64, Vec<(String, String)>> = HashMap::new();
@@ -152,10 +158,7 @@ impl ZoteroDB {
         Ok(map)
     }
 
-    fn batch_get_creators(
-        &self,
-        item_ids: &[i64],
-    ) -> Result<HashMap<i64, Vec<Creator>>> {
+    fn batch_get_creators(&self, item_ids: &[i64]) -> Result<HashMap<i64, Vec<Creator>>> {
         let placeholders = item_ids.iter().map(|_| "?").collect::<Vec<_>>().join(",");
         let sql = format!(
             "SELECT ic.itemID, c.firstName, c.lastName, ct.creatorType
@@ -167,8 +170,10 @@ impl ZoteroDB {
             placeholders
         );
         let mut stmt = self.conn.prepare(&sql)?;
-        let params: Vec<&dyn rusqlite::types::ToSql> =
-            item_ids.iter().map(|id| id as &dyn rusqlite::types::ToSql).collect();
+        let params: Vec<&dyn rusqlite::types::ToSql> = item_ids
+            .iter()
+            .map(|id| id as &dyn rusqlite::types::ToSql)
+            .collect();
         let rows = stmt.query_map(params.as_slice(), |row| {
             Ok((
                 row.get::<_, i64>(0)?,

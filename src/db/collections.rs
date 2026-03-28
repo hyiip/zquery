@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use rusqlite::params;
 
 use super::ZoteroDB;
@@ -103,10 +103,9 @@ impl ZoteroDB {
                 let available = self.list_siblings(parent_id)?;
                 let parent_desc = match parent_id {
                     None => "top level".to_string(),
-                    Some(pid) => {
-                        self.get_collection_name(pid)
-                            .unwrap_or_else(|_| format!("ID {}", pid))
-                    }
+                    Some(pid) => self
+                        .get_collection_name(pid)
+                        .unwrap_or_else(|_| format!("ID {}", pid)),
                 };
                 bail!(
                     "Collection '{}' not found under {}. Available: {}",
@@ -150,8 +149,10 @@ impl ZoteroDB {
 
         let ids: Vec<i64> = collections.iter().map(|c| c.id).collect();
         let placeholders = ids.iter().map(|_| "?").collect::<Vec<_>>().join(",");
-        let params: Vec<&dyn rusqlite::types::ToSql> =
-            ids.iter().map(|id| id as &dyn rusqlite::types::ToSql).collect();
+        let params: Vec<&dyn rusqlite::types::ToSql> = ids
+            .iter()
+            .map(|id| id as &dyn rusqlite::types::ToSql)
+            .collect();
 
         // Batch subcollection counts
         let sql = format!(
@@ -163,7 +164,9 @@ impl ZoteroDB {
         );
         let mut stmt = self.conn.prepare(&sql)?;
         let sub_counts: std::collections::HashMap<i64, usize> = stmt
-            .query_map(params.as_slice(), |row| Ok((row.get::<_, i64>(0)?, row.get::<_, usize>(1)?)))?
+            .query_map(params.as_slice(), |row| {
+                Ok((row.get::<_, i64>(0)?, row.get::<_, usize>(1)?))
+            })?
             .collect::<Result<_, _>>()?;
 
         // Batch item counts
@@ -180,7 +183,9 @@ impl ZoteroDB {
         );
         let mut stmt = self.conn.prepare(&sql)?;
         let item_counts: std::collections::HashMap<i64, usize> = stmt
-            .query_map(params.as_slice(), |row| Ok((row.get::<_, i64>(0)?, row.get::<_, usize>(1)?)))?
+            .query_map(params.as_slice(), |row| {
+                Ok((row.get::<_, i64>(0)?, row.get::<_, usize>(1)?))
+            })?
             .collect::<Result<_, _>>()?;
 
         for c in &mut collections {

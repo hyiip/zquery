@@ -1,4 +1,4 @@
-use comfy_table::{Table, ContentArrangement};
+use comfy_table::{ContentArrangement, Table};
 
 use crate::models::{BrowseResult, ExportResult, Item};
 
@@ -10,7 +10,10 @@ impl Renderer for TableRenderer {
     fn render_browse(&self, result: &BrowseResult) {
         match result {
             BrowseResult::Collections { path, collections } => {
-                println!("Collections at: {}", if path.is_empty() { "/" } else { path });
+                println!(
+                    "Collections at: {}",
+                    if path.is_empty() { "/" } else { path }
+                );
                 let mut table = Table::new();
                 table.set_content_arrangement(ContentArrangement::Dynamic);
                 table.set_header(vec!["Name", "Subcollections", "Items"]);
@@ -60,7 +63,11 @@ impl Renderer for TableRenderer {
     }
 
     fn render_show(&self, items: &[Item], collection_name: &str) {
-        println!("Detailed metadata for: {} ({} items)\n", collection_name, items.len());
+        println!(
+            "Detailed metadata for: {} ({} items)\n",
+            collection_name,
+            items.len()
+        );
         for (i, item) in items.iter().enumerate() {
             println!("{}. {}", i + 1, item.title);
             println!("   Authors: {}", format_creators_full(&item.creators));
@@ -72,9 +79,19 @@ impl Renderer for TableRenderer {
             if let Some(vol) = &item.volume {
                 let issue = item.issue.as_deref().unwrap_or("");
                 let pages = item.pages.as_deref().unwrap_or("");
-                println!("   Volume: {}{}{}", vol,
-                    if !issue.is_empty() { format!("({})", issue) } else { String::new() },
-                    if !pages.is_empty() { format!(", pp. {}", pages) } else { String::new() },
+                println!(
+                    "   Volume: {}{}{}",
+                    vol,
+                    if !issue.is_empty() {
+                        format!("({})", issue)
+                    } else {
+                        String::new()
+                    },
+                    if !pages.is_empty() {
+                        format!(", pp. {}", pages)
+                    } else {
+                        String::new()
+                    },
                 );
             }
             if let Some(doi) = &item.doi {
@@ -123,7 +140,11 @@ fn print_items_compact(items: &[Item]) {
             item.authors_short(),
             item.year.clone().unwrap_or_else(|| "n.d.".to_string()),
             item.title.clone(),
-            if item.pdf_path.is_some() { "yes".to_string() } else { "no".to_string() },
+            if item.pdf_path.is_some() {
+                "yes".to_string()
+            } else {
+                "no".to_string()
+            },
         ]);
     }
     println!("{table}");

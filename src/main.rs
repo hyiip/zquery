@@ -4,7 +4,7 @@ mod db;
 mod models;
 mod output;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use clap::Parser;
 use std::fs;
 use std::path::Path;
@@ -122,7 +122,10 @@ fn cmd_export(
         if let Some(src_path) = &item.pdf_path {
             let src = Path::new(src_path);
             if !src.exists() {
-                eprintln!("Warning: PDF not found on disk for '{}': {}", item.title, src_path);
+                eprintln!(
+                    "Warning: PDF not found on disk for '{}': {}",
+                    item.title, src_path
+                );
                 continue;
             }
 
