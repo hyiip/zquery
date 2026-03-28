@@ -7,7 +7,9 @@ argument-hint: [collection-path]
 
 # zquery — Zotero Library Browser
 
-`zquery` reads the local Zotero SQLite database. Use it to browse collections, find papers, and read PDFs.
+`zquery` is a standalone CLI binary installed on the user's PATH. Run it directly from any working directory — do NOT cd into the skill directory or look for scripts. Just run `zquery` as a shell command.
+
+It reads the local Zotero SQLite database to browse collections, find papers, and read PDFs.
 
 ## Commands
 

@@ -16,10 +16,12 @@ zquery ships with a [Claude Code skill](skill/SKILL.md) so coding agents know ho
 
 ```bash
 # Linux/macOS
-cp -r skill ~/.claude/skills/zquery
+mkdir -p ~/.claude/skills/zquery
+cp skill/SKILL.md ~/.claude/skills/zquery/
 
 # Windows (PowerShell)
-Copy-Item -Recurse skill "$env:USERPROFILE\.claude\skills\zquery"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills\zquery"
+Copy-Item skill\SKILL.md "$env:USERPROFILE\.claude\skills\zquery\"
 ```
 
 Then any Claude Code session can use `/zquery` to learn how to browse your library.
