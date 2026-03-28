@@ -108,3 +108,7 @@ Items in: bert class/voter (3)
 ## How it works
 
 Reads `zotero.sqlite` in immutable mode (`?mode=ro&immutable=1`) to avoid conflicts with a running Zotero instance. Collection paths are resolved by walking the parent-child hierarchy. Metadata is queried from Zotero's EAV schema (`itemData`/`itemDataValues`/`fields`). PDF paths are resolved from `itemAttachments` to absolute filesystem paths.
+
+## License
+
+[MIT](LICENSE)
