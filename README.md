@@ -2,7 +2,7 @@
 
 A Rust CLI for browsing your Zotero library. Designed as an interface for coding agents (like Claude) to discover and read collected literature.
 
-Reads the local Zotero SQLite database directly — no network, no API key, works while Zotero is running.
+Reads the local Zotero SQLite database directly, works while Zotero is running.
 
 ## Install
 
