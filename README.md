@@ -10,6 +10,20 @@ Reads the local Zotero SQLite database directly — no network, no API key, work
 cargo install --path .
 ```
 
+### Claude Code skill
+
+zquery ships with a [Claude Code skill](skill/SKILL.md) so coding agents know how to use it. To install:
+
+```bash
+# Linux/macOS
+cp -r skill ~/.claude/skills/zquery
+
+# Windows (PowerShell)
+Copy-Item -Recurse skill "$env:USERPROFILE\.claude\skills\zquery"
+```
+
+Then any Claude Code session can use `/zquery` to learn how to browse your library.
+
 ## Usage
 
 ### Browse collections
